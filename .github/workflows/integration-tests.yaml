@@ -12,7 +12,7 @@ concurrency:
 jobs:
   baseline:
     name: Shared workflow policy
-    uses: yaron-E92/AutoDev/.github/workflows/profile-baseline.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/AutoDev/.github/workflows/profile-baseline.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
     with:
       ref: ${{ github.sha }}
       require_concurrency: true
@@ -22,7 +22,7 @@ jobs:
   integration-tests:
     name: Integration tests
     needs: [baseline]
-    uses: yaron-E92/AutoDev/.github/workflows/profile-dotnet.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/AutoDev/.github/workflows/profile-dotnet.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
     with:
       ref: ${{ github.sha }}
       runner: ubuntu-latest
