@@ -1,4 +1,4 @@
-using Yaref92.Events;
+using FullHouse.Events;
 
 namespace OtChaim.Domain.EmergencyEvents.Events;
 
