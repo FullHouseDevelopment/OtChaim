@@ -11,10 +11,10 @@ using OtChaim.Application.Users.EventSubscribers;
 using OtChaim.Application.Users.Handlers;
 using OtChaim.Domain.EmergencyEvents.Events;
 using OtChaim.Domain.Users.Events;
-using Yaref92.Events;
-using Yaref92.Events.Abstractions;
-using Yaref92.Events.Serialization;
-using Yaref92.Events.Transports;
+using FullHouse.Events;
+using FullHouse.Events.Abstractions;
+using FullHouse.Events.Serialization;
+using FullHouse.Events.Transports;
 
 namespace OtChaim.Application;
 

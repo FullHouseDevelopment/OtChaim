@@ -1,6 +1,6 @@
 using OtChaim.Domain.EmergencyEvents;
 using OtChaim.Domain.EmergencyEvents.Events;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Application.EmergencyEvents.EventSubscribers;
 

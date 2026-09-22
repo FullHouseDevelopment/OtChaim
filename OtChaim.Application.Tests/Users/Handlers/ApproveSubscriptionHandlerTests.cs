@@ -4,7 +4,7 @@ using OtChaim.Application.Users.Commands;
 using OtChaim.Application.Users.Handlers;
 using OtChaim.Domain.Users;
 using OtChaim.Domain.Users.Events;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Application.Tests.Users.Handlers;
 
