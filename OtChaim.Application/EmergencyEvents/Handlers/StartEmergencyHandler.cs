@@ -1,7 +1,7 @@
 using OtChaim.Application.Common;
 using OtChaim.Application.EmergencyEvents.Commands;
 using OtChaim.Domain.EmergencyEvents.Events;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Application.EmergencyEvents.Handlers;
 

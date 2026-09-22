@@ -5,7 +5,7 @@ using OtChaim.Domain.Common;
 using OtChaim.Domain.EmergencyEvents;
 using OtChaim.Domain.EmergencyEvents.Events;
 using OtChaim.Domain.Users;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Application.Tests.Emergencies.EventSubscribers;
 

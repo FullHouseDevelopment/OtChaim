@@ -9,7 +9,7 @@ using OtChaim.Domain.EmergencyEvents.Events;
 using OtChaim.Domain.Users;
 using OtChaim.Presentation.MAUI.Pages.Tool;
 using System.Collections.ObjectModel;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Presentation.MAUI.ViewModels.Tool;
 

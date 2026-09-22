@@ -2,7 +2,7 @@ using OtChaim.Application.Common;
 using OtChaim.Application.Users.Commands;
 using OtChaim.Domain.Users;
 using OtChaim.Domain.Users.Events;
-using Yaref92.Events.Abstractions;
+using FullHouse.Events.Abstractions;
 
 namespace OtChaim.Application.Users.Handlers;
 
