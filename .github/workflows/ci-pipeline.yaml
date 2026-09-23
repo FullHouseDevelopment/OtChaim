@@ -78,8 +78,8 @@ jobs:
         bash scripts/ci-configure-nuget.sh
         dotnet workload install maui-android --skip-manifest-update
       android_restore_command: dotnet restore OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj
-      android_build_command: dotnet build OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj --configuration Release --framework net8.0-android --no-restore
-      android_test_command: find OtChaim.Presentation.MAUI/bin/Release/net8.0-android -type f -name 'OtChaim.Presentation.MAUI.dll' -print -quit | grep -q .
+      android_build_command: dotnet build OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj --configuration Release --framework net10.0-android --no-restore
+      android_test_command: find OtChaim.Presentation.MAUI/bin/Release/net10.0-android -type f -name 'OtChaim.Presentation.MAUI.dll' -print -quit | grep -q .
 
       windows_enabled: true
       windows_runner: windows-latest
@@ -87,8 +87,8 @@ jobs:
         bash scripts/ci-configure-nuget.sh
         dotnet workload install maui-windows --skip-manifest-update
       windows_restore_command: dotnet restore OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj -p:OtChaimWindowsOnly=true
-      windows_build_command: dotnet build OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj --configuration Release --framework net8.0-windows10.0.19041.0 -p:OtChaimWindowsOnly=true
-      windows_test_command: find OtChaim.Presentation.MAUI/bin/Release/net8.0-windows10.0.19041.0 -type f -name 'OtChaim.Presentation.MAUI.dll' -print -quit | grep -q .
+      windows_build_command: dotnet build OtChaim.Presentation.MAUI/OtChaim.Presentation.MAUI.csproj --configuration Release --framework net10.0-windows10.0.19041.0 -p:OtChaimWindowsOnly=true
+      windows_test_command: find OtChaim.Presentation.MAUI/bin/Release/net10.0-windows10.0.19041.0 -type f -name 'OtChaim.Presentation.MAUI.dll' -print -quit | grep -q .
     secrets:
       nuget_token: ${{ secrets.GITHUB_TOKEN }}
     permissions:

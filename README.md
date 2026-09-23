@@ -95,7 +95,7 @@ OtChaim is a modern emergency event management system designed to facilitate rap
 
 ## 🛠️ Getting Started
 ### Prerequisites
-- [.NET 8+ SDK](https://dotnet.microsoft.com/download)
+- [.NET 10+ SDK](https://dotnet.microsoft.com/download)
 - (Optional) [MAUI workload](https://learn.microsoft.com/en-us/dotnet/maui/get-started/installation)
 
 ### Build & Run
