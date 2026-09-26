@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
 
 permissions: {}
@@ -16,7 +16,7 @@ concurrency:
 jobs:
   baseline:
     name: Shared workflow policy
-    uses: yaron-E92/AutoDev/.github/workflows/profile-baseline.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-baseline.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
     with:
       ref: ${{ github.sha }}
       require_concurrency: true
@@ -26,17 +26,18 @@ jobs:
   version-intent:
     name: Version intent
     if: github.event_name == 'pull_request'
-    uses: yaron-E92/AutoDev/.github/workflows/version-intent.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-intent.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
     with:
       pr_body: ${{ github.event.pull_request.body }}
       head: ${{ github.sha }}
     permissions:
       contents: read
+      pull-requests: read
 
   headless:
     name: Headless .NET validation
     needs: [baseline]
-    uses: yaron-E92/AutoDev/.github/workflows/profile-dotnet.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-dotnet.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
     with:
       ref: ${{ github.sha }}
       runner: windows-latest
@@ -66,7 +67,7 @@ jobs:
   maui:
     name: MAUI product validation
     needs: [baseline]
-    uses: yaron-E92/AutoDev/.github/workflows/profile-maui.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-maui.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
     with:
       ref: ${{ github.sha }}
       global_json_file: global.json
@@ -130,7 +131,7 @@ jobs:
     name: Advance version tag
     needs: [ci-gate]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.ci-gate.result == 'success'
-    uses: yaron-E92/AutoDev/.github/workflows/version-tag.yml@7190410c74ab6674d1c8cc647b178bbc4b5cdd54
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-tag.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
     with:
       head: ${{ github.sha }}
       branch: main
