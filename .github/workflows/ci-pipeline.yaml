@@ -32,6 +32,7 @@ jobs:
       head: ${{ github.sha }}
     permissions:
       contents: read
+      pull-requests: read
 
   headless:
     name: Headless .NET validation
