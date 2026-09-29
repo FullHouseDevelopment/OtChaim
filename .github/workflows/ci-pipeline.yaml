@@ -14,33 +14,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  baseline:
-    name: Shared workflow policy
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-baseline.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
+  guard:
+    name: Shared development guard
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-guard.yml@e432396f2a71d28dd65fd582e78aee2270e39e2b
     with:
-      ref: ${{ github.sha }}
+      ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      tier: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'heavy' || 'light' }}
       require_concurrency: true
-    permissions:
-      contents: read
-
-  version-intent:
-    name: Version intent
-    if: github.event_name == 'pull_request'
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-intent.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
-    with:
-      pr_body: ${{ github.event.pull_request.body }}
-      head: ${{ github.sha }}
+      pr_body: ${{ github.event.pull_request.body || '' }}
+      pr_number: ${{ github.event.pull_request.number || 0 }}
     permissions:
       contents: read
       pull-requests: read
 
   headless:
     name: Headless .NET validation
-    needs: [baseline]
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-dotnet.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
+    needs: [guard]
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-dotnet.yml@e432396f2a71d28dd65fd582e78aee2270e39e2b
     with:
       ref: ${{ github.sha }}
-      runner: windows-latest
+      tier: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'heavy' || 'light' }}
+      runner: ubuntu-latest
       global_json_file: global.json
       setup_command: bash scripts/ci-configure-nuget.sh
       restore_command: dotnet restore OtChaim.NoGUI.slnf
@@ -65,11 +59,13 @@ jobs:
       packages: read
 
   maui:
-    name: MAUI product validation
-    needs: [baseline]
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-maui.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
+    name: MAUI product validation / main
+    needs: [guard]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-maui.yml@e432396f2a71d28dd65fd582e78aee2270e39e2b
     with:
       ref: ${{ github.sha }}
+      tier: heavy
       global_json_file: global.json
       headless_enabled: false
 
@@ -99,7 +95,7 @@ jobs:
   ci-gate:
     name: CI gate
     if: always()
-    needs: [baseline, version-intent, headless, maui]
+    needs: [guard, headless, maui]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -107,31 +103,29 @@ jobs:
       - name: Require version policy and product validation
         shell: bash
         env:
-          BASELINE: ${{ needs.baseline.result }}
-          VERSION_INTENT: ${{ needs.version-intent.result }}
+          GUARD: ${{ needs.guard.result }}
           HEADLESS: ${{ needs.headless.result }}
           MAUI: ${{ needs.maui.result }}
         run: |
           set -euo pipefail
-          if [[ "$BASELINE" != 'success' ||
-                "$HEADLESS" != 'success' ||
-                "$MAUI" != 'success' ]]; then
-            echo "Required CI failed: baseline=$BASELINE headless=$HEADLESS maui=$MAUI" >&2
+          [[ "$GUARD" == 'success' && "$HEADLESS" == 'success' ]] || {
+            echo "Required development CI failed: guard=$GUARD headless=$HEADLESS" >&2
             exit 1
+          }
+
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            [[ "$MAUI" == 'success' ]] || { echo "Required main MAUI validation: $MAUI" >&2; exit 1; }
+          else
+            [[ "$MAUI" == 'skipped' ]] || { echo "MAUI unexpectedly ran in development CI: $MAUI" >&2; exit 1; }
           fi
 
-          if [[ "$VERSION_INTENT" != 'success' && "$VERSION_INTENT" != 'skipped' ]]; then
-            echo "Version intent validation failed: $VERSION_INTENT" >&2
-            exit 1
-          fi
-
-          echo 'OtChaim authoritative CI passed.'
+          echo 'OtChaim CI passed.'
 
   version-tag:
     name: Advance version tag
     needs: [ci-gate]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.ci-gate.result == 'success'
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-tag.yml@e94f1a2958f87e12a9baf32327c65887b3d9f096
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-tag.yml@e432396f2a71d28dd65fd582e78aee2270e39e2b
     with:
       head: ${{ github.sha }}
       branch: main
