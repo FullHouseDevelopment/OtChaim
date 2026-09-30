@@ -63,9 +63,11 @@ jobs:
 
     - name: Setup .NET
       id: setupDotnet
-      uses: actions/setup-dotnet@v4
+      uses: FullHouseDevelopment/CommonWork/.github/actions/setup-dotnet@000000000000000000000000000000000000000
       with:
-        dotnet-version: 8.0.x
+        global_json_file: ''
+        dotnet_version: 8.0.x
+        cache: 'false'
 
     - name: Ensure GitHub NuGet Source
       env:
@@ -196,9 +198,11 @@ jobs:
     - name: Setup .NET
       if: ${{ env.GUI_BUILD_REQUIRED == 'true' }}
       id: setupDotnet
-      uses: actions/setup-dotnet@v4
+      uses: FullHouseDevelopment/CommonWork/.github/actions/setup-dotnet@000000000000000000000000000000000000000
       with:
-        dotnet-version: 8.0.x
+        global_json_file: ''
+        dotnet_version: 8.0.x
+        cache: 'false'
 
     - name: Ensure GitHub NuGet Source
       if: ${{ env.GUI_BUILD_REQUIRED == 'true' }}
