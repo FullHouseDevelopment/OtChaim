@@ -16,7 +16,7 @@ concurrency:
 jobs:
   guard:
     name: Shared development guard
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-guard.yml@377760babc7734e5fd20c22558b05e6753fe3311
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-guard.yml@b512701de3bb848f507a11ea6dd7922e821e39cb
     with:
       ref: ${{ github.event.pull_request.head.sha || github.sha }}
       tier: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'heavy' || 'light' }}
@@ -30,7 +30,7 @@ jobs:
   headless:
     name: Headless .NET validation
     needs: [guard]
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-dotnet.yml@377760babc7734e5fd20c22558b05e6753fe3311
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-dotnet.yml@b512701de3bb848f507a11ea6dd7922e821e39cb
     with:
       ref: ${{ github.sha }}
       tier: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'heavy' || 'light' }}
@@ -62,7 +62,7 @@ jobs:
     name: MAUI product validation / main
     needs: [guard]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-maui.yml@377760babc7734e5fd20c22558b05e6753fe3311
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/profile-maui.yml@b512701de3bb848f507a11ea6dd7922e821e39cb
     with:
       ref: ${{ github.sha }}
       tier: heavy
@@ -125,7 +125,7 @@ jobs:
     name: Advance version tag
     needs: [ci-gate]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.ci-gate.result == 'success'
-    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-tag.yml@377760babc7734e5fd20c22558b05e6753fe3311
+    uses: FullHouseDevelopment/CommonWork/.github/workflows/version-tag.yml@b512701de3bb848f507a11ea6dd7922e821e39cb
     with:
       head: ${{ github.sha }}
       branch: main
